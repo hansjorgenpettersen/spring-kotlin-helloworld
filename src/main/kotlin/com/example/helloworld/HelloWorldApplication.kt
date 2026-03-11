@@ -20,4 +20,7 @@ class HelloWorldController {
 
     @GetMapping("/ole")
     fun ole(): String = "Hello Ole! :)"
+
+    @GetMapping("/daniel")
+    fun daniel(): String = "Hello Daniel! :)"
 }
