@@ -17,4 +17,7 @@ class HelloWorldController {
 
     @GetMapping("/")
     fun hello(): String = "Hello World"
+
+    @GetMapping("/ole")
+    fun ole(): String = "Hello Ole! :)"
 }
