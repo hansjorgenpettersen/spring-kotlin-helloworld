@@ -1,0 +1,25 @@
+name: Deploy to Linux Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/helloworld/spring-kotlin-helloworld
+            git pull origin main
+            pkill -f 'spring-boot:run' || true
+            sleep 2
+            nohup mvn spring-boot:run > /var/log/helloworld.log 2>&1 &
+            echo "Deployed successfully"
