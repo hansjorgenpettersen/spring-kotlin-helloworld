@@ -56,12 +56,12 @@ class HelloWorldController {
 
     @GetMapping("/weather")
     fun weather(): Map<String, Any> {
-        val url = "https://api.open-meteo.com/v1/forecast?latitude=59.9139&longitude=10.7522&current_weather=true"
+        val url = "https://api.open-meteo.com/v1/forecast?latitude=60.3680801369957&longitude=7.503686220036417&current_weather=true"
         val response = restTemplate.getForObject(url, Map::class.java) ?: emptyMap<String, Any>()
         @Suppress("UNCHECKED_CAST")
         val current = response["current_weather"] as? Map<String, Any> ?: emptyMap()
         return mapOf(
-            "location" to "Oslo, Norway",
+            "location" to "Ål, Norway",
             "temperature" to "${current["temperature"]}°C",
             "windspeed" to "${current["windspeed"]} km/h",
             "time" to (current["time"] ?: "unknown")
