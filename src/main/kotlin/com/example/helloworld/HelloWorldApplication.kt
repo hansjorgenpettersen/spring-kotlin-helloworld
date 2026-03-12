@@ -28,5 +28,8 @@ class HelloWorldController {
     fun stian(): String = "Hello Stian!"
 
     @GetMapping("/random")
-    fun random(): Map<String, Int> = mapOf("random" to (1..1000).random())
+    fun random(): Map<String, Any> = mapOf(
+        "random" to (1..1000).random(),
+        "letter" to ('a'..'z').random()
+    )
 }
