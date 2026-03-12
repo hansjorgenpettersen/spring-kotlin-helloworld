@@ -14,10 +14,14 @@ jobs:
           cd $HOME/spring-kotlin-helloworld
           git pull origin main
 
-      - name: Restart app
+      - name: Build JAR
         run: |
-          pkill -f 'spring-boot:run' || true
-          sleep 2
           cd $HOME/spring-kotlin-helloworld
-          nohup mvn spring-boot:run > $HOME/helloworld.log 2>&1 &
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$JAVA_HOME/bin:$PATH
+          mvn package -DskipTests
+
+      - name: Restart service
+        run: |
+          sudo systemctl restart helloworld
           echo "Deployed successfully"
