@@ -4,6 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
 @SpringBootApplication
 class HelloWorldApplication
@@ -26,6 +31,18 @@ class HelloWorldController {
 
     @GetMapping("/stian")
     fun stian(): String = "Hello Stian!"
+
+    @GetMapping("/time")
+    fun time(): Map<String, String> {
+        val zone = ZoneId.of("Europe/Oslo")
+        val now = LocalDateTime.now(zone)
+        return mapOf(
+            "time" to now.format(DateTimeFormatter.ofPattern("HH:mm:ss")),
+            "date" to now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+            "day" to now.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+            "timezone" to zone.id
+        )
+    }
 
     @GetMapping("/random")
     fun random(): Map<String, Any> = mapOf(
