@@ -11,13 +11,13 @@ jobs:
     steps:
       - name: Pull latest code
         run: |
-          cd /opt/helloworld/spring-kotlin-helloworld
+          cd $HOME/spring-kotlin-helloworld
           git pull origin main
 
       - name: Restart app
         run: |
           pkill -f 'spring-boot:run' || true
           sleep 2
-          cd /opt/helloworld/spring-kotlin-helloworld
-          nohup mvn spring-boot:run > /var/log/helloworld.log 2>&1 &
+          cd $HOME/spring-kotlin-helloworld
+          nohup mvn spring-boot:run > $HOME/helloworld.log 2>&1 &
           echo "Deployed successfully"
