@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -19,6 +20,8 @@ fun main(args: Array<String>) {
 
 @RestController
 class HelloWorldController {
+
+    private val restTemplate = RestTemplate()
 
     @GetMapping("/")
     fun hello(): String = "Hello World"
@@ -50,4 +53,28 @@ class HelloWorldController {
         "letter" to ('a'..'z').random(),
         "name" to "Hans Jørgen"
     )
+
+    @GetMapping("/weather")
+    fun weather(): Map<String, Any> {
+        val url = "https://api.open-meteo.com/v1/forecast?latitude=59.9139&longitude=10.7522&current_weather=true"
+        val response = restTemplate.getForObject(url, Map::class.java) ?: emptyMap<String, Any>()
+        @Suppress("UNCHECKED_CAST")
+        val current = response["current_weather"] as? Map<String, Any> ?: emptyMap()
+        return mapOf(
+            "location" to "Oslo, Norway",
+            "temperature" to "${current["temperature"]}°C",
+            "windspeed" to "${current["windspeed"]} km/h",
+            "time" to (current["time"] ?: "unknown")
+        )
+    }
+
+    @GetMapping("/joke")
+    fun joke(): Map<String, Any> {
+        val url = "https://v2.jokeapi.dev/joke/Programming?type=twopart"
+        val response = restTemplate.getForObject(url, Map::class.java) ?: emptyMap<String, Any>()
+        return mapOf(
+            "setup" to (response["setup"] ?: ""),
+            "punchline" to (response["delivery"] ?: "")
+        )
+    }
 }
