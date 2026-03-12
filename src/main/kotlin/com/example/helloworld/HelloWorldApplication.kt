@@ -30,6 +30,7 @@ class HelloWorldController {
     @GetMapping("/random")
     fun random(): Map<String, Any> = mapOf(
         "random" to (1..1000).random(),
-        "letter" to ('a'..'z').random()
+        "letter" to ('a'..'z').random(),
+        "name" to "Hans"
     )
 }
